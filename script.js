@@ -14,28 +14,40 @@ function playRound(playerSelection, computerSelection) {
     computerSelection = computerSelection.toLowerCase();
 
     let result;
-    let winner;
-    let loser;
 
     if (playerSelection === computerSelection) {
-        result = "tie"
-        winner = capitalize(playerSelection);
-        loser = capitalize(computerSelection);
-        return `You ${result}, ${winner} ties with ${loser}!`
+        result = "tie";
+        console.log(result);
     } else if (
         playerSelection === "rock" && computerSelection === "scissors" ||
         playerSelection === "scissors" && computerSelection === "paper" ||
         playerSelection === "paper" && computerSelection === "rock"
         ) {
         result = "win";
-        winner = capitalize(playerSelection);
-        loser = capitalize(computerSelection);
+        console.log(result);
     } else {
         result = "lose";
-        winner = capitalize(computerSelection);
-        loser = capitalize(playerSelection);
+        console.log(result);
     }
-    return `You ${result}, ${winner} beats ${loser}!`
+    return result;
+}
+
+function game() {
+    let round = 1;
+    let playerScore = 0;
+    let computerScore = 0;
+    let winner;
+    for (round; round <= 5; round++) {
+        playerSelection = prompt("Rock, paper or scissors?");
+        result = playRound(playerSelection, computerPlay());
+        if (result === "win") {
+            playerScore++;
+        } else if (result === "lose") {
+            computerScore++;
+        }
+    }
+    playerScore > computerScore ? winner = "Player" : winner = "Computer";
+    console.log(`The ${winner} wins! Final score: Player: ${playerScore}; Computer: ${computerScore}`);
 }
 
 function capitalize(word) {
