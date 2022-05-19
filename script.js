@@ -53,16 +53,14 @@ buttons.forEach(button => {
 // Function to be called when player selects their choice, plays a round and checks if there is a winner
 function game(e) {
     let computerSelection = computerPlay();
-    // Changed the way the playerchoice is found, since element is returned in function, the data is pulled from the scrElement option
+    // Changed the way the playerchoice is found, since element is returned in function, the data is pulled from the srcElement option
     let playerSelection = e.srcElement.dataset.key;
     let result = playRound(playerSelection, computerSelection);
     // Adds a point to the score of the winner
     if(result === "win") {
         playerScore++;
-        console.log(playerScore);
     } else if (result === "lose") {
         computerScore++;
-        console.log(computerScore);
     } else {
         ties++;
     }
@@ -84,6 +82,7 @@ function game(e) {
     }, 1);
 }
 
+// Function to reset scores and layout of page to starting position
 function resetGame() {
     playerScore = 0;
     computerScore = 0;
