@@ -38,16 +38,26 @@ function capitalize(word) {
     return firstLetter.toUpperCase() + word.substring(1);
 }
 
+// Logging results
+const results = document.querySelector('#results');
+function logResult(result) {
+    let paragraph = document.createElement('p');
+    let text = `You ${result[0]}! Player chose ${result[1]}, the computer chose ${result[2]}.`;
+    paragraph.textContent = text;
+    results.appendChild(paragraph);
+}
+
 // Adding event listeners for buttons:
 const buttons = document.querySelectorAll('#btn');
 buttons.forEach(button => {
     button.addEventListener('click', () => {
         let computerSelection = computerPlay();
         let playerSelection = button.getAttribute('data-key');
-        console.log(`Player: ${playerSelection}, Computer: ${computerSelection}`);
-        playRound(playerSelection, computerSelection);
+        let result = [playRound(playerSelection, computerSelection), playerSelection, computerSelection];
+        logResult(result);
     });
 });
+
 
 // function game() {
 //     let round = 1;
