@@ -1,5 +1,11 @@
-// Array with possible choices
+// Declaring all constants such as choice array, scores and DOM Nodes for readability and reuse across functions
 const choices = ["rock", "scissors", "paper"];
+let playerScore = 0;
+let computerScore = 0;
+let ties = 0;
+const results = document.querySelector('#results');
+const scoreHeader = document.querySelector('#score');
+const buttons = document.querySelectorAll('#btn');
 
 // Function to generate a random choice for the computer
 function computerPlay() {
@@ -13,66 +19,77 @@ function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase();
     computerSelection = computerSelection.toLowerCase();
 
-    let result;
-
     if (playerSelection === computerSelection) {
-        result = "tie";
-        console.log(result);
+        return "tie";
     } else if (
         playerSelection === "rock" && computerSelection === "scissors" ||
         playerSelection === "scissors" && computerSelection === "paper" ||
         playerSelection === "paper" && computerSelection === "rock"
         ) {
-        result = "win";
-        console.log(result);
+        return "win";
     } else {
-        result = "lose";
-        console.log(result);
+        return "lose";
     }
-    return result;
 }
 
-// Function to capitalize words
-function capitalize(word) {
-    let firstLetter = word.toLowerCase().substring(0, 1)
-    return firstLetter.toUpperCase() + word.substring(1);
-}
-
-// Logging results
-const results = document.querySelector('#results');
-function logResult(result) {
+// Logging results and score 
+function logResult(result, playerSelection, computerSelection) {
     let paragraph = document.createElement('p');
-    let text = `You ${result[0]}! Player chose ${result[1]}, the computer chose ${result[2]}.`;
+    let text = `You ${result}! Player chose ${playerSelection}, the computer chose ${computerSelection}.`;
     paragraph.textContent = text;
     results.appendChild(paragraph);
 }
 
+function updateScore() {
+    let scoreFormat = `Player: ${playerScore} | Computer: ${computerScore} | Ties: ${ties}`
+    scoreHeader.textContent = `Score: ${scoreFormat}`
+}
+
 // Adding event listeners for buttons:
-const buttons = document.querySelectorAll('#btn');
 buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        let computerSelection = computerPlay();
-        let playerSelection = button.getAttribute('data-key');
-        let result = [playRound(playerSelection, computerSelection), playerSelection, computerSelection];
-        logResult(result);
-    });
+    button.addEventListener('click', game);
 });
 
+// Function to be called when player selects their choice, plays a round and checks if there is a winner
+function game(e) {
+    let computerSelection = computerPlay();
+    // Changed the way the playerchoice is found, since element is returned in function, the data is pulled from the scrElement option
+    let playerSelection = e.srcElement.dataset.key;
+    let result = playRound(playerSelection, computerSelection);
+    // Adds a point to the score of the winner
+    if(result === "win") {
+        playerScore++;
+        console.log(playerScore);
+    } else if (result === "lose") {
+        computerScore++;
+        console.log(computerScore);
+    } else {
+        ties++;
+    }
 
-// function game() {
-//     let round = 1;
-//     let playerScore = 0;
-//     let computerScore = 0;
-//     let winner;
-//     for (round; round <= 5; round++) {
-//         playerSelection = prompt("Rock, paper or scissors?");
-//         result = playRound(playerSelection, computerPlay());
-//         if (result === "win") {
-//             playerScore++;
-//         } else if (result === "lose") {
-//             computerScore++;
-//         }
-//     }
-//     playerScore > computerScore ? winner = "Player" : winner = "Computer";
-//     console.log(`The ${winner} wins! Final score: Player: ${playerScore}; Computer: ${computerScore}`);
-// }
+    // Log the results and update score prior to checking for winner
+    logResult(result, playerSelection, computerSelection);
+    updateScore();
+
+    // Checks if there is a winner that has reached 5 points
+    // Added timeout in order to prevent alert superceding updateScore()
+    setTimeout(function () { 
+        if(playerScore === 5) {
+            alert("The player has won! Congratulations!");
+            resetGame();
+        } else if (computerScore === 5) {
+            alert("The computer has won! Try again!");
+            resetGame();
+        }
+    }, 1);
+}
+
+function resetGame() {
+    playerScore = 0;
+    computerScore = 0;
+    ties = 0;
+    scoreHeader.textContent = "";
+    while (results.lastChild != scoreHeader) {
+        results.removeChild(results.lastChild);
+    }
+}
