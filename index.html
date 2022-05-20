@@ -6,14 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock, Paper, Scissors</title>
     <script src="./script.js" defer></script>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <div id="gamescreen">
-        <h1>Rock, Paper, Scissors!</h1>
-        <h2>Play against the computer, can you win?</h2>
-        <button id="btn" data-key="rock">Rock</button>
-        <button id="btn" data-key="paper">Paper</button>
-        <button id="btn" data-key="scissors">Scissors</button>
+        <h1 id="title">Rock, Paper, Scissors!</h1>
+        <h2 id="subtitle">Play against the computer, can you win?</h2>
+        <div id="buttons">
+            <button id="btn" data-key="rock">Rock</button>
+            <button id="btn" data-key="paper">Paper</button>
+            <button id="btn" data-key="scissors">Scissors</button>
+        </div>
         <div id="results">
             <h2 id="score"></h1>
         </div>
